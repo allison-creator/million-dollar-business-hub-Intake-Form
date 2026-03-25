@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Million Dollar Business Hub — Client Intake</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #2D6A4F;
+    --gold-light: #C8E8D8;
+    --gold-dark: #1B4332;
+    --ink: #0A2318;
+    --ink-mid: #1E4733;
+    --ink-soft: #4D7A64;
+    --cream: #F0F9F4;
+    --cream-dark: #D6EDE2;
+    --white: #FFFFFF;
+    --border: rgba(27,67,50,0.2);
+    --border-strong: rgba(27,67,50,0.4);
+    --section-gap: 3rem;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(144,238,144,0.04) 40px,
+      rgba(144,238,144,0.04) 41px
+    );
+  }
+  .header-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .header-sub {
+    font-size: 14px;
+    color: rgba(250,247,242,0.6);
+    margin-top: 1rem;
+    font-weight: 300;
+  }
+  .gold-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto;
+  }
+
+  .progress-bar-wrap {
+    background: var(--ink);
+    padding: 0 2rem 1.5rem;
+    text-align: center;
+  }
+  .progress-steps {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .progress-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    cursor: pointer;
+  }
+  .progress-step::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    right: -50%;
+    height: 1px;
+    background: rgba(27,67,50,0.3);
+  }
+  .progress-step:last-child::before { display: none; }
+  .step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(27,67,50,0.4);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(250,247,242,0.4);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s;
+  }
+  .progress-step.active .step-dot {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+  .progress-step.done .step-dot {
+    background: rgba(27,67,50,0.3);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .step-label {
+    font-size: 10px;
+    color: rgba(250,247,242,0.4);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .progress-step.active .step-label { color: var(--gold); }
+  .progress-step.done .step-label { color: rgba(27,67,50,0.6); }
+
+  .form-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .form-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .form-section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section.header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .section-header p {
+    margin-top: 0.5rem;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  .sub-section {
+    margin-bottom: 2.5rem;
+  }
+  .sub-section-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sub-section-title::before {
+    content: '';
+    width: 16px;
+    height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .check-item:hover { background: var(--cream-dark); }
+  .check-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border-strong);
+    border-radius: 3px;
+    background: var(--white);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .check-item input[type="checkbox"]:checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .check-item input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+  .check-item label {
+    font-size: 14px;
+    color: var(--ink-mid);
+    cursor: pointer;
+    line-height: 1.4;
+  }
+  .check-item:has(input:checked) label {
+    color: var(--ink-soft);
+    text-decoration: line-through;
+    text-decoration-color: var(--gold);
+  }
+
+  .field-group {
+    margin-bottom: 1.5rem;
+  }
+  .field-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    margin-bottom: 0.5rem;
+  }
+  .field-hint {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  input[type="text"], input[type="email"], input[type="url"], input[type="number"],
+  textarea, select {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--white);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(27,67,50,0.15);
+  }
+  textarea { resize: vertical; min-height: 90px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+  .card-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .completion-bar-wrap {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    height: 6px;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+  }
+  .completion-bar {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .completion-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    gap: 1rem;
+  }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-mid);
+  }
+  .btn-ghost:hover { background: var(--cream-dark); }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--gold-dark); }
+  .btn-submit {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 14px 36px;
+    font-size: 14px;
+  }
+  .btn-submit:hover { background: var(--ink-mid); }
+
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  .success-screen.active { display: block; }
+  .success-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-size: 22px;
+  }
+  .success-screen h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+  .success-screen p {
+    color: var(--ink-soft);
+    max-width: 420px;
+    margin: 0 auto;
+    font-size: 15px;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--gold-light);
+    color: var(--gold-dark);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Client Intake</div>
+  <h1>Million Dollar<br><em>Business Hub</em></h1>
+  <div class="gold-line"></div>
+  <p class="header-sub">Complete each section to unlock your full brand build</p>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="progress-step active" onclick="goToSection(0)" id="step-0">
+      <div class="step-dot">1</div>
+      <span class="step-label">Brand</span>
+    </div>
+    <div class="progress-step" onclick="goToSection(1)" id="step-1">
+      <div class="step-dot">2</div>
+      <span class="step-label">Social</span>
+    </div>
+    <div class="progress-step" onclick="goToSection(2)" id="step-2">
+      <div class="step-dot">3</div>
+      <span class="step-label">Offers</span>
+    </div>
+    <div class="progress-step" onclick="goToSection(3)" id="step-3">
+      <div class="step-dot">4</div>
+      <span class="step-label">Journey</span>
+    </div>
+    <div class="progress-step" onclick="goToSection(4)" id="step-4">
+      <div class="step-dot">5</div>
+      <span class="step-label">Vision</span>
+    </div>
+  </div>
+</div>
+
+<div class="form-container">
+
+  <!-- SECTION 1: Brand Build -->
+  <div class="form-section active" id="section-0">
+    <div class="section-header">
+      <div class="section-number">Part One</div>
+      <h2>Done-For-You Brand Build</h2>
+      <p>Your strategic foundations, visual assets, and design direction.</p>
+    </div>
+
+    <div class="completion-label" id="comp-label-0">Section completion</div>
+    <div class="completion-bar-wrap"><div class="completion-bar" id="comp-bar-0" style="width:0%"></div></div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Strategic Foundations</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Brand Identity Questionnaire completed</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Brand positioning statement</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Core offer hierarchy</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Brand tagline (if finalized)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Signature phrases / mantras</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>3–5 differentiators from competitors</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Brand Positioning Statement</label>
+          <textarea placeholder="Who it's for + the transformation you deliver…"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Brand Tagline</label>
+          <input type="text" placeholder="Your signature line…">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Signature Phrases / Mantras</label>
+          <textarea placeholder="List your key phrases, one per line…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Top 3–5 Differentiators</label>
+          <textarea placeholder="What sets you apart from competitors…" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Visual Assets</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Logo files (AI, EPS, SVG preferred)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Favicon</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Brand photography (min. 20 images)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Lifestyle images</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Headshots (vertical + horizontal)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Signature colors selected</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Mood board / inspiration</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Dropbox / Drive Link for Assets</label>
+          <input type="url" placeholder="https://…">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Signature Brand Colors (hex or description)</label>
+          <input type="text" placeholder="e.g. #B8935A, deep navy, warm ivory…">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Mood Board Link (Pinterest / Drive)</label>
+          <input type="url" placeholder="https://…">
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Design Preferences</div>
+      <div class="two-col">
+        <div class="field-group">
+          <label class="field-label">Primary Palette Direction</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Warm & earthy</option>
+            <option>Cool & minimal</option>
+            <option>Dark & luxurious</option>
+            <option>Light & airy</option>
+            <option>Bold & vibrant</option>
+            <option>Other / TBD</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Aesthetic Direction</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Luxury / High-end</option>
+            <option>Clean / Modern</option>
+            <option>Warm / Approachable</option>
+            <option>Editorial / Magazine</option>
+            <option>Feminine / Soft</option>
+            <option>Bold / Disruptive</option>
+            <option>Other / TBD</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Font Preferences</label>
+        <input type="text" placeholder="e.g. serif headlines, clean sans-serif body…">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Design Do-Not-Wants</label>
+        <textarea placeholder="Styles, colors, or elements you want to avoid…" style="min-height:70px;"></textarea>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Website Brand Support</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Website platform login</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Hosting login</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Domain login</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>DNS access</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Founder story (long version)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Short bio (50/100/250 word)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Testimonials (minimum 5)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Case studies</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Offer descriptions</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Speaking topics + keynote descriptions</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Media mentions / logos</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(0)"><label>Booking calendar link</label></label>
+      </div>
+      <div style="margin-top:1.25rem;" class="two-col">
+        <div class="field-group">
+          <label class="field-label">Website Platform</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Kajabi</option>
+            <option>Squarespace</option>
+            <option>WordPress</option>
+            <option>Showit</option>
+            <option>Webflow</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Booking Calendar Tool</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Calendly</option>
+            <option>Acuity</option>
+            <option>TidyCal</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Founder Story (paste or summarize)</label>
+        <textarea placeholder="Your full origin story / brand narrative…" style="min-height:120px;"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Short Bio (50 words)</label>
+        <textarea placeholder="Your punchy 50-word bio…" style="min-height:70px;"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <span></span>
+      <button class="btn btn-primary" onclick="nextSection()">Continue to Social Media →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Social Media -->
+  <div class="form-section" id="section-1">
+    <div class="section-header">
+      <div class="section-number">Part One — Continued</div>
+      <h2>Social Media & Marketing</h2>
+      <p>Platform access, profile optimization, and your content calendar.</p>
+    </div>
+
+    <div class="completion-label" id="comp-label-1">Section completion</div>
+    <div class="completion-bar-wrap"><div class="completion-bar" id="comp-bar-1" style="width:0%"></div></div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Platform Access</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Instagram login ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>LinkedIn login ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Facebook login ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Canva access shared</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Scheduling platform access</label></label>
+      </div>
+      <div style="margin-top:1.25rem;" class="two-col">
+        <div class="field-group">
+          <label class="field-label">Scheduling Platform Used</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Later</option>
+            <option>Planoly</option>
+            <option>Meta Business Suite</option>
+            <option>Buffer</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Link in Bio Tool</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Linktree</option>
+            <option>Stan</option>
+            <option>Kajabi</option>
+            <option>Beacons</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Primary CTA Link Destination</label>
+        <input type="url" placeholder="Where should traffic land?">
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Profile Optimization</div>
+      <div class="field-group">
+        <label class="field-label">Short Bio (for social profiles)</label>
+        <textarea placeholder="Punchy 1–2 line bio for Instagram / LinkedIn…" style="min-height:70px;"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Long Bio (LinkedIn / About page)</label>
+        <textarea placeholder="Full professional bio…" style="min-height:100px;"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Instagram Highlight Category Names</label>
+        <input type="text" placeholder="e.g. About, Work With Me, Wins, Podcast, Press…">
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Content Foundations</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>3–5 content pillars defined</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Key messaging themes</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Launch dates / promo windows</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Speaking engagements calendar</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Upcoming event timeline</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Your 3–5 Content Pillars</label>
+          <textarea placeholder="e.g. Leadership, Business Strategy, Personal Brand, Mindset, Behind-the-Scenes…" style="min-height:80px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Upcoming Launch Dates</label>
+          <textarea placeholder="Offer launches, promotions, events — with dates…" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Marketing Calendar Inputs</div>
+      <div class="two-col">
+        <div class="field-group">
+          <label class="field-label">Revenue Target (this quarter)</label>
+          <input type="text" placeholder="e.g. $250,000">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Email List Size</label>
+          <input type="number" placeholder="e.g. 3500">
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Existing Lead Magnets</label>
+        <textarea placeholder="List current lead magnets and where they live…" style="min-height:70px;"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Speaking Calendar (upcoming)</label>
+        <textarea placeholder="Stages, events, virtual appearances — with dates…" style="min-height:70px;"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Media Features (upcoming)</label>
+        <textarea placeholder="Podcasts, press, features — with dates…" style="min-height:70px;"></textarea>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Media Kit</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Headshots (print resolution)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Speaking reel</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Podcast interview links</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Notable stages / logos</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Awards / credentials</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Bio (short / medium / long)</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Signature talk titles + outcomes</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(1)"><label>Speaking testimonials</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Speaking Reel Link</label>
+          <input type="url" placeholder="https://…">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Signature Talk Titles + Learning Outcomes</label>
+          <textarea placeholder="Talk 1: [Title] — Audience will leave knowing…" style="min-height:100px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Speaking Testimonials</label>
+          <textarea placeholder="Paste 2–3 testimonials specifically about your speaking…" style="min-height:100px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="prevSection()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSection()">Continue to Offers →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Offers + Funnels -->
+  <div class="form-section" id="section-2">
+    <div class="section-header">
+      <div class="section-number">Part Two</div>
+      <h2>Done-For-You Offers + Funnels</h2>
+      <p>Your offer suite, sales pages, and funnel infrastructure.</p>
+    </div>
+
+    <div class="completion-label" id="comp-label-2">Section completion</div>
+    <div class="completion-bar-wrap"><div class="completion-bar" id="comp-bar-2" style="width:0%"></div></div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Offer Strategy</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Offer name confirmed</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Transformation statement written</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Pricing confirmed</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Payment plans set</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Bonuses confirmed</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Guarantee defined</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Scarcity structure defined</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Flagship Offer Name</label>
+          <input type="text" placeholder="e.g. The Executive Circle">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Transformation Statement</label>
+          <textarea placeholder="By the end of [offer], clients will go from ___ to ___…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="two-col">
+          <div class="field-group">
+            <label class="field-label">Price</label>
+            <input type="text" placeholder="e.g. $5,000 / $25,000">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Payment Plans</label>
+            <input type="text" placeholder="e.g. 3x $1,750">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Bonuses Included</label>
+          <textarea placeholder="List all bonuses and their perceived value…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="two-col">
+          <div class="field-group">
+            <label class="field-label">Guarantee</label>
+            <input type="text" placeholder="e.g. 30-day money back">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Scarcity Structure</label>
+            <input type="text" placeholder="e.g. 10 spots / closes Friday">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Sales Page Assets</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Sales page copy draft</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Brand photography for sales page</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Testimonial placement ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Objection handling notes</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>FAQ list prepared</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Top 3 Objections (and how you address them)</label>
+          <textarea placeholder="Objection 1: ___  Response: ___" style="min-height:100px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">FAQ List</label>
+          <textarea placeholder="Q: ___  A: ___" style="min-height:100px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Client Testimonials (for sales page)</label>
+          <textarea placeholder="Paste 3–5 of your strongest results-based testimonials…" style="min-height:120px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Checkout Setup</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Stripe login ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Kajabi / ThriveCart login ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Sales tax settings confirmed</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Refund policy document ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Terms & conditions ready</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="two-col">
+          <div class="field-group">
+            <label class="field-label">Checkout Platform</label>
+            <select>
+              <option value="">Select…</option>
+              <option>Kajabi</option>
+              <option>ThriveCart</option>
+              <option>Stripe directly</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Refund Policy Window</label>
+            <input type="text" placeholder="e.g. 14-day, no refunds, etc.">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Funnel Build</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Lead magnet title confirmed</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Lead magnet content ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Email platform login ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Existing email sequences shared</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(2)"><label>Tagging structure defined</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Lead Magnet Title</label>
+          <input type="text" placeholder="e.g. The CEO Morning Ritual Guide">
+        </div>
+        <div class="two-col">
+          <div class="field-group">
+            <label class="field-label">Delivery Format</label>
+            <select>
+              <option value="">Select…</option>
+              <option>PDF download</option>
+              <option>Video training</option>
+              <option>Email series</option>
+              <option>Audio guide</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Email Platform</label>
+            <select>
+              <option value="">Select…</option>
+              <option>Kajabi</option>
+              <option>ActiveCampaign</option>
+              <option>ConvertKit / Kit</option>
+              <option>Mailchimp</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Pain Points (for opt-in copy)</label>
+          <textarea placeholder="What is your ideal client struggling with right now?…" style="min-height:80px;"></textarea>
+        </div>
+        <div class="two-col">
+          <div class="field-group">
+            <label class="field-label">Email Tone</label>
+            <select>
+              <option value="">Select…</option>
+              <option>Educational</option>
+              <option>Authority-led</option>
+              <option>Story-led</option>
+              <option>Mix of all three</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Preferred Sequence Length</label>
+            <input type="text" placeholder="e.g. 5 emails over 7 days">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="prevSection()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSection()">Continue to Client Journey →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Client Journey -->
+  <div class="form-section" id="section-3">
+    <div class="section-header">
+      <div class="section-number">Part Three</div>
+      <h2>Client Journey Implementation</h2>
+      <p>Onboarding, delivery, and your operations infrastructure.</p>
+    </div>
+
+    <div class="completion-label" id="comp-label-3">Section completion</div>
+    <div class="completion-bar-wrap"><div class="completion-bar" id="comp-bar-3" style="width:0%"></div></div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Onboarding</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Welcome email draft</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Intake form questions ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Contract template ready</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Payment confirmation process</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Calendar booking flow set up</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Client portal / Slack / Voxer ready</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Welcome Email Draft</label>
+          <textarea placeholder="Paste your welcome email here, or key points to include…" style="min-height:100px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Intake Form Questions</label>
+          <textarea placeholder="List the questions you ask new clients…" style="min-height:90px;"></textarea>
+        </div>
+        <div class="two-col">
+          <div class="field-group">
+            <label class="field-label">Client Communication Platform</label>
+            <select>
+              <option value="">Select…</option>
+              <option>Slack</option>
+              <option>Voxer</option>
+              <option>WhatsApp</option>
+              <option>Email only</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Client Portal Platform</label>
+            <select>
+              <option value="">Select…</option>
+              <option>Kajabi</option>
+              <option>Notion</option>
+              <option>ClickUp</option>
+              <option>Google Drive</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Delivery</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Program curriculum outline</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Session schedule</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Portal access confirmed</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Resource library</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Community platform</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Completion milestone structure</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Program Curriculum Outline</label>
+          <textarea placeholder="Module/session breakdown — topics, sequencing, outcomes…" style="min-height:120px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Session Schedule</label>
+          <textarea placeholder="Frequency, duration, format (e.g. weekly 60-min Zoom calls)…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Community Platform</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Kajabi Community</option>
+            <option>Circle</option>
+            <option>Facebook Group</option>
+            <option>Slack</option>
+            <option>No community</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">SOPs + Delegation</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Current team roles documented</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Customer support owner identified</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Payments owner identified</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Tech issues owner identified</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Social media owner identified</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Email marketing owner identified</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Existing SOPs shared</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(3)"><label>Refund workflow documented</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Current Team Roles</label>
+          <textarea placeholder="Role — Name — Responsibilities…" style="min-height:90px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">KPI Dashboard Metrics (top 5)</label>
+          <textarea placeholder="e.g. MRR, churn rate, lead conversion, email open rate, NPS…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Refund Request Workflow</label>
+          <textarea placeholder="How is a refund request handled, step by step…" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="prevSection()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSection()">Continue to Vision →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Vision -->
+  <div class="form-section" id="section-4">
+    <div class="section-header">
+      <div class="section-number">Bonus — Strategic Vision</div>
+      <h2>High-Level Strategic Inputs</h2>
+      <p>To build at a luxury, legacy level — we need to understand where you're going.</p>
+    </div>
+
+    <div class="completion-label" id="comp-label-4">Section completion</div>
+    <div class="completion-bar-wrap"><div class="completion-bar" id="comp-bar-4" style="width:0%"></div></div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Revenue + Scale</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>3-year revenue vision articulated</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>Exit or scale plan defined</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>Brand expansion direction clear</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>Personal capacity goals set</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">3-Year Revenue Vision</label>
+          <textarea placeholder="Where do you see this business in 3 years? Revenue, team size, lifestyle…" style="min-height:90px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Exit or Scale Plan</label>
+          <textarea placeholder="Are you building to sell, scale with a team, license, franchise, or stay boutique?…" style="min-height:80px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Brand Expansion Direction</label>
+          <textarea placeholder="New verticals, geographic expansion, product lines, IP…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Personal Capacity Goals (work schedule)</label>
+          <textarea placeholder="How many hours/week do you want to work? What does your ideal week look like?…" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Legacy + Visibility</div>
+      <div class="checklist-grid">
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>Desired speaking stages identified</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>Media dream list created</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>Long-term IP vision articulated</label></label>
+        <label class="check-item"><input type="checkbox" onchange="updateProgress(4)"><label>Identity evolution statement written</label></label>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div class="field-group">
+          <label class="field-label">Desired Speaking Stages</label>
+          <textarea placeholder="Dream stages — conferences, events, companies, podcasts…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Media Dream List</label>
+          <textarea placeholder="Publications, podcasts, TV, features — where do you want to be seen?…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Long-Term IP Vision</label>
+          <textarea placeholder="Books, courses, certifications, methodology, training programs…" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Identity Evolution Statement</label>
+          <textarea placeholder="Who are you becoming? How do you want to be known in 5 years?…" style="min-height:90px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-title">Anything Else?</div>
+      <div class="field-group">
+        <label class="field-label">Additional Notes for Your Team</label>
+        <textarea placeholder="Anything else we should know before we begin building?…" style="min-height:120px;"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="prevSection()">← Back</button>
+      <button class="btn btn-submit" onclick="submitForm()">Submit Intake Form ✓</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="success">
+    <div class="success-icon">✓</div>
+    <div class="gold-line"></div>
+    <h2>You're all set.</h2>
+    <p style="margin-top:1rem;">Your intake has been received. Our team will review everything and be in touch within 48 hours to kick off your brand build.</p>
+    <div class="gold-line" style="margin-top:2rem;"></div>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:1rem;">Million Dollar Business Hub</p>
+  </div>
+
+</div>
+
+<script>
+  let currentSection = 0;
+  const totalSections = 5;
+
+  function updateSteps() {
+    for (let i = 0; i < totalSections; i++) {
+      const step = document.getElementById('step-' + i);
+      step.className = 'progress-step';
+      if (i < currentSection) step.classList.add('done');
+      else if (i === currentSection) step.classList.add('active');
+    }
+  }
+
+  function goToSection(n) {
+    document.getElementById('section-' + currentSection).classList.remove('active');
+    currentSection = n;
+    document.getElementById('section-' + currentSection).classList.add('active');
+    updateSteps();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextSection() {
+    if (currentSection < totalSections - 1) goToSection(currentSection + 1);
+  }
+  function prevSection() {
+    if (currentSection > 0) goToSection(currentSection - 1);
+  }
+
+  function updateProgress(sectionIdx) {
+    const section = document.getElementById('section-' + sectionIdx);
+    const all = section.querySelectorAll('input[type="checkbox"]');
+    const checked = section.querySelectorAll('input[type="checkbox"]:checked');
+    const pct = all.length ? Math.round((checked.length / all.length) * 100) : 0;
+    document.getElementById('comp-bar-' + sectionIdx).style.width = pct + '%';
+    document.getElementById('comp-label-' + sectionIdx).textContent = 'Section completion — ' + pct + '%';
+  }
+
+  // ── PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW ──
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQDlvn1mnTgYeJs9xBcd7Dpn-MReNsy_errfbF8VIqV3WuKjJw97cuZ8UT-gOd85gWcA/exec';
+
+  function collectFormData() {
+    const data = { submitted_at: new Date().toISOString() };
+    document.querySelectorAll('input[type="text"], input[type="email"], input[type="url"], input[type="number"], textarea, select').forEach((el, i) => {
+      const label = el.closest('.field-group')?.querySelector('.field-label')?.textContent?.trim() || ('field_' + i);
+      const key = label.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 50);
+      data[key] = el.value;
+    });
+    document.querySelectorAll('.sub-section').forEach(sub => {
+      const title = sub.querySelector('.sub-section-title')?.textContent?.trim() || 'section';
+      const checked = [];
+      sub.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+        checked.push(cb.closest('.check-item')?.querySelector('label')?.textContent?.trim() || '');
+      });
+      if (checked.length) {
+        const key = title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 50) + '_checked';
+        data[key] = checked.join(' | ');
+      }
+    });
+    return data;
+  }
+
+  async function submitForm() {
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+
+    const data = collectFormData();
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (e) {
+      console.warn('Submission error:', e);
+    }
+
+    for (let i = 0; i < totalSections; i++) {
+      document.getElementById('section-' + i).classList.remove('active');
+    }
+    document.querySelector('.progress-bar-wrap').style.display = 'none';
+    document.getElementById('success').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateSteps();
+</script>
+</body>
+</html>
